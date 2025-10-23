@@ -1,7 +1,7 @@
 {
-  "name": "@xurizaemon/11ty-passthrucopy",
+  "name": "xurizaemon/11ty-sandbox",
   "version": "1.0.0",
-  "description": "Profiling passthru copy.",
+  "description": "Minimal Eleventy for profiling.",
   "scripts": {
     "build": "eleventy",
     "serve": "eleventy --serve",
