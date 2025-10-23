@@ -1,13 +1,15 @@
 name: Eleventy Build
-on: [push]
+on:
+  push:
+  pull_request:
 
 env:
   NODE_VERSION: '20'
 
 jobs:
-  build_deploy:
+  build:
+    name: Build site
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
@@ -15,7 +17,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version:  ${{ env.NODE_VERSION }}
-          cache: 'npm'
 
       - name: Install packages
         run: npm ci
@@ -23,13 +24,28 @@ jobs:
       - name: Run npm build
         run: npm run build
 
-      - name: Configure Pages
-        uses: actions/configure-pages@v3
-
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
-          path: 'public'
+          name: site
+          path: ./public
+
+  publish:
+    name: Publish site
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Pages artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: ./public
 
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v1
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
