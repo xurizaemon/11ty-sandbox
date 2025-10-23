@@ -8,6 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "chmod +x ./bin/*.js"
   },
+  "type": "module",
   "author": "Chris Burgess <chris@giantrobot.co.nz>",
   "license": "ISC",
   "devDependencies": {
