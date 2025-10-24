@@ -1,52 +1,40 @@
-name: Eleventy Build
+name: GitHub Pages
+
 on:
   push:
+    branches:
+      - main
   pull_request:
 
-env:
-  NODE_VERSION: '20'
-  BUILD_DIR: './public'
-
 jobs:
-  build:
-    name: Build site
-    runs-on: ubuntu-latest
+  deploy:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ env.NODE_VERSION }}
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version:  ${{ env.NODE_VERSION }}
+          node-version: '24'
 
-      - name: Install packages
-        run: npm ci
-
-      - name: Run npm build
-        run: npm run build
-
-      - name: Upload Pages artifact
-        uses: actions/upload-artifact@v4
+      - name: Cache dependencies
+        uses: actions/cache@v4
         with:
-          name: site
-          path: ${{ env.BUILD_DIR }}
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-  publish:
-    name: Publish site
-    needs: build
-    runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
-    steps:
-      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npm run build
 
-      - name: Download Pages artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: site
-          path: ${{ env.BUILD_DIR }}
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        if: github.ref == 'refs/heads/main'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ${{ env.BUILD_DIR }}
+          publish_dir: ./public
