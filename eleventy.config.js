@@ -1,3 +1,4 @@
+import { HtmlBasePlugin } from "@11ty/eleventy";
 import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
 
 export default function (eleventyConfig) {
@@ -18,6 +19,7 @@ export default function (eleventyConfig) {
     });
 
     eleventyConfig.addPlugin(eleventyImageTransformPlugin);
+    eleventyConfig.addPlugin(HtmlBasePlugin);
 
     return config;
 };
