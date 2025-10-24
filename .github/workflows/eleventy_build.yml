@@ -32,11 +32,13 @@ jobs:
             ${{ runner.os }}-node-
 
       - run: npm ci
+      - run: npm run build:media
+      - run: npm run build:content
       - run: npm run build
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
-        if: github.ref == 'refs/heads/main'
+#        if: github.ref == 'refs/heads/main'
         with:
           path: ./public
 

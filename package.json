@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "Minimal Eleventy for profiling.",
   "scripts": {
+    "build:media": "./bin/fetch-media.sh",
+    "build:content": "./bin/build-content.sh",
     "build": "eleventy",
     "serve": "eleventy --serve",
     "test": "echo \"Error: no test specified\" && exit 1"
