@@ -6,6 +6,9 @@ on:
       - main
   pull_request:
 
+env:
+  DEBUG: Eleventy:Benchmark*
+
 jobs:
   deploy:
     runs-on: ubuntu-22.04
