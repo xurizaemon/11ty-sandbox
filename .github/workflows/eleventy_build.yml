@@ -32,6 +32,8 @@ jobs:
             ${{ runner.os }}-node-
 
       - run: npm ci
+      - run: npm run build:media
+      - run: npm run build:content
       - run: npm run build
 
       - name: Upload Pages artifact
