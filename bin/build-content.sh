@@ -1,16 +1,17 @@
 #!/usr/bin/env bash
 
 set -e
+shopt -s extglob
 
 # Extracted location of media.tgz
 cd src/media
 
 echo "# Images" > ../images.md
 echo > ../images.md
+
 echo "# Media" > ../media.md
 echo > ../media.md
 
-shopt -s extglob
 for file in *.@(png|jpg|gif|jpeg); do
   echo "![$file](/media/$file)" >> ../images.md
 done
