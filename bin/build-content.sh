@@ -1,24 +1,19 @@
 #!/usr/bin/env bash
 
 set -e
+shopt -s extglob
 
 # Extracted location of media.tgz
 cd src/media
 
 echo "# Images" > ../images.md
-echo > ../images.md
+echo >> ../images.md
+
 echo "# Media" > ../media.md
-echo > ../media.md
+echo >> ../media.md
 
-shopt -s extglob
-for file in *.@(png|jpg|gif|jpeg); do
-  echo "![$file](/media/$file)" >> ../images.md
-done
+find . \( -name '*.gif' -o -name '*.jpg' -o -name '*.jpeg' -o -name '*.png' -o -name '*.webm' \) -printf '![%P](/media/%P)\n' >> ../images.md
 
-for file in *.@(mp4|m4a|mov); do
-  echo "<video src='/media/$file'></video>" >> ../media.md
-done
+find . \( -name '*.mp3' \) -printf '<audio src="/media/%P">%P</audio>' >> ../media.md
 
-for file in *.@(mp3); do
-  echo "<audio src='/media/$file'></audio>" >> ../media.md
-done
+find . \( -name '*.mp4' -o -name '*.m4a' -o -name '*.mov' \) -printf '<video src="/media/%P">%P</video>' >> ../media.md

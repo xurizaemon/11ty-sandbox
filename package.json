@@ -13,6 +13,7 @@
   "author": "Chris Burgess <chris@giantrobot.co.nz>",
   "license": "ISC",
   "devDependencies": {
-    "@11ty/eleventy": "^3.1.0"
+    "@11ty/eleventy": "^3.1.0",
+    "@11ty/eleventy-img": "^6.0.4"
   }
 }

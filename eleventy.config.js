@@ -1,3 +1,6 @@
+import { HtmlBasePlugin } from "@11ty/eleventy";
+import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
+
 export default function (eleventyConfig) {
     const config = {
         dir: {
@@ -14,6 +17,9 @@ export default function (eleventyConfig) {
     eleventyConfig.addPassthroughCopy("src/media", {
         // overwrite: false
     });
+
+    eleventyConfig.addPlugin(eleventyImageTransformPlugin);
+    eleventyConfig.addPlugin(HtmlBasePlugin);
 
     return config;
 };
